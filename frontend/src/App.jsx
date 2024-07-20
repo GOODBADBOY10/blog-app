@@ -6,11 +6,14 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Logout from './pages/Logout'
 import Projects from './pages/Projects'
+import Header from './components/Header'
 
 function App() {
 
   return (
       <BrowserRouter>
+      
+        <Header />
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -19,10 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/project" element={<Projects/>} />
-
-
         </Routes>
-
         
       </BrowserRouter>
   )
