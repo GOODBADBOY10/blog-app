@@ -35,7 +35,7 @@ function SignUp() {
       }
       setLoading(false);
       if(response.ok) {
-        navigate('/');
+        navigate('/login');
       }
     } catch (error) {
       setInvalidError(error.message);
