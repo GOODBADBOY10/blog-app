@@ -14,6 +14,19 @@ dotenv.config();
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 
+// creating a global error middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Something went wrong';
+  res.status(statusCode).json({
+    succes: false,
+    statusCode,
+    message,
+});
+})
+
+
+
 const PORT = 8000;
 
 
