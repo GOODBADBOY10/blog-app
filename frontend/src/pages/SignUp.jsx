@@ -12,7 +12,7 @@ function SignUp() {
   const handleChnage = (e) => {
     setFormData({...formData, [e.target.id]: e.target.value.trim() })
   }
-
+// handling form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.username ||!formData.email ||!formData.password) {
