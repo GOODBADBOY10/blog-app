@@ -4,7 +4,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
-import Logout from './pages/Logout'
+import SignUp from './pages/Logout'
 import Projects from './pages/Projects'
 import Header from './components/Header'
 
@@ -20,7 +20,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
+          <Route path="/logout" element={<SignUp />} />
           <Route path="/project" element={<Projects/>} />
         </Routes>
         
