@@ -9,6 +9,10 @@ export const signup = async (req, res, next) => {
         next(errorHandler(400, 'Please provide all required fields'));
     }
 
+    if(password.length < 6) {
+        next(errorHandler(400, 'Password must be at least 6 characters long'));
+    }
+
     const hashedPassword = bcrypt.hashSync(password, 10);
     // Add user to the database
     const newUser = new User({
