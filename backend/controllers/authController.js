@@ -50,9 +50,11 @@ export const login = async (req, res, next) => {
         userId: validUser._id 
         },
         process.env.JWT_SECRET);
+        const { password: pass, ...rest } = validUser._doc;
+
         res.status(200).cookie('my-token', token, {
             httpOnly: true,
-        }).json(validUser);
+        }).json(rest);
 
     } catch (error) {
         next(error);
