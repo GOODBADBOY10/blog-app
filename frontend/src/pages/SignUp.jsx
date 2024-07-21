@@ -8,7 +8,7 @@ function SignUp() {
   const [invalidError, setInvalidError] = useState(null)
   const navigate = useNavigate();
 
-
+// getting the forms
   const handleChnage = (e) => {
     setFormData({...formData, [e.target.id]: e.target.value.trim() })
   }
