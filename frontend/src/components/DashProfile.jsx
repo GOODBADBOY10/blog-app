@@ -1,8 +1,10 @@
-import { Button, TextInput } from 'flowbite-react'
+import { Button, TextInput, Alert } from 'flowbite-react'
 import React, { useState, useRef, useEffect } from 'react'
 import {useSelector} from 'react-redux'
 import {getStorage, uploadBytesResumable, ref, getDownloadURL} from 'firebase/storage';
 import {app} from '../firebase';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 function DashProfile() {
     const {currentUser} = useSelector((state) => state.user)
@@ -42,6 +44,7 @@ function DashProfile() {
 //     }
 //   }
 // }
+        setImageFileUploadError(null); 
         const storage = getStorage(app);
         const fileName = new Date().getTime() + imageFile.name;
         const storageRef = ref(storage, fileName);
@@ -51,7 +54,12 @@ function DashProfile() {
             // 10.342
             setImageFileUploadingProgress(progress.toFixed(0));
         }, (error) => {
-          setImageFileUploadError('coundnt upload image(file must be less than 2MB and must be an image');
+          setImageFileUploadError(
+            'coundnt upload image(file must be less than 2MB and must be an image)'
+          );
+          setImageFileUploadingProgress(null);
+          setImageFileUrl(null);
+          setImageFile(null);
         },
         () => {
             getDownloadURL(uploadImageTask.snapshot.ref).then((downloadURL) => {
@@ -73,15 +81,43 @@ function DashProfile() {
         />
         <div 
         className='w-32 h-32 self-center cursor-pointer 
-        shadow-md overflow-hidden rounded-full'>
+        shadow-md overflow-hidden rounded-full relative'>
+          {imageFileUploadingProgress && (
+            <CircularProgressbar 
+            value={imageFileUploadingProgress || 0} 
+            text={`${imageFileUploadingProgress}%}`}
+            strokeWidth={5}
+            styles={{ 
+              root: {
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                borderRadius: '50%',
+                top: 0,
+                left: 0,
+              },
+              path: {
+                stroke: `rgba(62, 152, 199, ${imageFileUploadingProgress / 100})`,
+              }
+            }} 
+            />
+          )}
             <img 
             src={imageFileUrl || currentUser.profilePicture} 
             alt='profile image' 
-            className='rounded-full w-full h-full object-cover 
-            border-8 border-[lightgray]'
+            className={`rounded-full w-full h-full object-cover 
+            border-8 border-[lightgray]
+            ${imageFileUploadingProgress 
+              && imageFileUploadingProgress < 100 
+              && 'opacity-60'}`}
             onClick={() => filePickerRef.current.click()} 
             />
         </div>
+        {imageFileUploadError && (
+          <Alert color='failure'>
+            {imageFileUploadError}
+          </Alert>
+        )}
         <TextInput 
         type='text' 
         id='username' 
