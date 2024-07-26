@@ -5,6 +5,7 @@ import {AiOutlineSearch } from'react-icons/ai'
 import {FaMoon, FaSun} from'react-icons/fa'
 import {useSelector, useDispatch} from'react-redux'
 import { toggleTheme } from '../redux/theme/themeSlice.js'
+import { logoutStart, logoutSuccess, logoutFailure } from '../redux/user/userSlice';
 
 function Header() {
     // initialize location state
@@ -13,6 +14,23 @@ function Header() {
     const {theme} = useSelector(state => state.theme)
 
     const {currentUser} = useSelector(state => state.user)
+
+    const handleLogout = async () => {
+        dispatch(logoutStart());
+        try {
+          const response = await fetch('/api/user/logout', {
+            method: 'POST'
+          });
+          const data = await response.json();
+          if(!response.ok){
+            dispatch(logoutFailure(data.message));
+          } else {
+            dispatch(logoutSuccess(data));
+          }
+        } catch (error) {
+          dispatch(logoutFailure(error.message));
+        }
+      }
   return (
       <Navbar className='border-b-2'>
         {/* creating a logo and a brand name */}
@@ -67,7 +85,7 @@ function Header() {
                         <DropdownItem>Profile</DropdownItem>
                         </Link>
                         <DropdownDivider />
-                        <DropdownItem>
+                        <DropdownItem onClick={handleLogout}>
                             Logout
                         </DropdownItem>
                     </DropdownHeader>
