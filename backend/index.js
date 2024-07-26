@@ -3,6 +3,7 @@ import connectToMongoDb from './connectToMongoDb.js';
 import dotenv from 'dotenv'
 import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import postRoutes from './routes/postRoutes.js';
 import cookieParser from 'cookie-parser';
 
 
@@ -15,6 +16,7 @@ dotenv.config();
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/post', postRoutes);
 
 // creating a global error middleware
 app.use((err, req, res, next) => {
