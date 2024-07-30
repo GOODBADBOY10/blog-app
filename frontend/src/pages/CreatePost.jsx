@@ -67,7 +67,7 @@ function CreatePost() {
         navigate(`/post/${data.slug}`);
       }
     } catch (error) {
-      setPublishError('error publishing post');
+      setPublishError('error publishing a post');
       console.log(error);
     }
   }
