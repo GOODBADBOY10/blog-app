@@ -1,5 +1,5 @@
 import express from 'express';
-import { test, updateUser, deleteUser, logout } from '../controllers/userController.js';
+import { test, updateUser, deleteUser, logout, getUsers } from '../controllers/userController.js';
 import { verifyUser } from '../utils/verifyUser.js';
 
 
@@ -9,5 +9,6 @@ router.get('/test', test);
 router.put('/update/:userId', verifyUser, updateUser);
 router.delete('/delete/:userId', verifyUser, deleteUser);
 router.post('/logout', logout);
+router.get('/getusers', verifyUser, getUsers);
 
 export default router;
