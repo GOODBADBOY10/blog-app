@@ -1,12 +1,16 @@
-import { Alert, Button, Textarea, TextInput } from 'flowbite-react'
-import React from 'react'
+import { Alert, Button, Textarea,} from 'flowbite-react'
+import React, { useEffect, useState } from 'react'
 import {useSelector} from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import Comment from './Comment.jsx'
 
 function CommentSection({postId}) {
     const {currentUser} = useSelector((state) => state.user)
     const [comment, setComment] = useState('')
     const [commentError, setCommentError] = useState(null)
+    const [comments, setComments] = useState([]);
+    const navigate = useNavigate();
+    console.log(comments);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,15 +25,56 @@ function CommentSection({postId}) {
                 },
                 body: JSON.stringify({content: comment, postId, userId: currentUser._id}),
             })
-            const data = await response.json()
+            const data = await response.json();
             if(response.ok){
                 setComment('');
                 setCommentError(null)
+                setComments([data, ...comments]);
             }
         } catch (error) {
             setCommentError(error.message);
         }
     }
+
+    useEffect(() => {
+        const getComments = async () => {
+            try {
+               const response = await fetch(`/api/comment/getpostcomments/${postId}`);
+               if(response.ok) {
+                const data = await response.json();
+                setComments(data);
+               } 
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+        getComments();
+    },[postId])
+
+    const handleLike = async (commentId) => {
+        try {
+           if (!currentUser) {
+            navigate('/login');
+            return;
+           } 
+           const response = await fetch(`/api/commemt/likecomment/${commentId}`, {
+            method: 'PUT',
+           });
+           if (response.ok) {
+            const data = response.json();
+            setComments(comments.map((comment) => 
+                comment._id === commentId ? {
+                    ...comment,
+                    likes: data.likes,
+                    numberOfLikes: data.likes.length,
+                } : comment
+            ));
+           }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
   return (
     <div className='max-w-2xl mx -auto w-full p-3'>
       {currentUser ? (
@@ -63,13 +108,26 @@ function CommentSection({postId}) {
                 className='text-gray-600 text-xs'>{200 - comment.length} charcaters remaining</p>
                 <Button 
                 outline 
-                gradientDuoTone={purpleToBlue} 
+                gradientDuoTone='purpleToBlue' 
                 type='submit'>Submit</Button>
             </div>
             {commentError && (
                 <Alert color='failure' className='mt-5'>{commentError}</Alert>
             )}
         </form>
+      )}
+      {comments.length === 0 ? (
+        <p className='text-sm my-5'>No comments yet</p>
+      ) : (
+        <>
+        <div className='text-sm my-5 flex items-center gap-1'>
+            <p>Comments</p>
+            <div className='border border-gray-700 py-1 px-2 rounded-sm'>{comments.length}</div>
+        </div>
+        {comments.map((comment) => {
+            <Comment key={comment._id} comment={comment} onLike={handleLike} />
+        })}
+        </>
       )}
     </div>
   )

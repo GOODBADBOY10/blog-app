@@ -1,10 +1,11 @@
 import express from 'express';
 import { verifyUser } from '../utils/verifyUser.js';
-import { createComment } from '../controllers/commentController.js';
+import { createComment, getPostComments, likeComment } from '../controllers/commentController.js';
 
 
 const router = express.Router();
 
-router.post('/create', verifyUser, createComment)
-
+router.post('/create', verifyUser, createComment);
+router.get('/getpostcomments/:postId', getPostComments);
+router.put('/likecomment/:commentId', verifyUser, likeComment);
 export default router;
