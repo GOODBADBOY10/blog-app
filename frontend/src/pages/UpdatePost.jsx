@@ -24,6 +24,7 @@ function UpdatePost() {
        const fetchPost = async () => {
         const response = await fetch(`/api/post/getposts?postId=${postId}`); 
         const data = await response.json();
+        console.log(data);
         if(!response.ok){
             console.log(data.message)
             setPublishError(data.message)

@@ -88,7 +88,7 @@ function DashPosts() {
               </TableHeadCell>
             </TableHead>
             {userPosts.map((post) => (
-              <TableBody className='divide-y'>
+              <TableBody className='divide-y' key={post._id}>
                 <TableRow className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                   <TableCell>{new Date(post.updatedAt).toLocaleDateString()}</TableCell>
                   <TableCell>
@@ -116,7 +116,7 @@ function DashPosts() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Link to={`update-post/${post._id}`} className='text-teal-500 hover:underline'>
+                    <Link to={`/update-post/${post._id}`} className='text-teal-500 hover:underline'>
                     <span>Edit</span>
                     </Link>
                   </TableCell>
