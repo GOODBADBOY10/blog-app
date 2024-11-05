@@ -33,7 +33,7 @@ export const signup = async (req, res, next) => {
 export const login = async (req, res, next) => {
     const { email, password } = req.body;
     // check if email and password are provided
-    if (!email || !password) {
+    if (!email || !password || email === ' ' || password === ' ') {
         return next(errorHandler(400, 'Please provide email and password'));
     }
 
@@ -81,7 +81,6 @@ export const google = async (req, res, next) => {
                 password: hashedPassword,
                 profilePicture: photoUrl,
             });
-            console.log(newUser);
             await newUser.save();
             const token = jwt.sign({ 
                 id: newUser._id,

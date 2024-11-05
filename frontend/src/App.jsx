@@ -14,6 +14,7 @@ import OnlyAdminPrivate from './components/OnlyAdminPrivate'
 import UpdatePost from './pages/UpdatePost'
 import PostPage from './pages/PostPage'
 import ScrollToTop from './components/ScrollToTop'
+import Search from './pages/Search';
 
 function App() {
 
@@ -25,16 +26,21 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+
           <Route element={<PrivateRoute />}>
             <Route path="dashboard" element={<Dashboard />} />
           </Route>
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path='/search' element={<Search />} />
           <Route path="/project" element={<Projects/>} />
+
           <Route element={<OnlyAdminPrivate />}>
             <Route path='/create-post' element={<CreatePost />} />
             <Route path='/update-post/:postId' element={<UpdatePost />} />
           </Route>
+
           <Route path='/post/:postSlug' element={<PostPage />} />
         </Routes>
         <Footers />

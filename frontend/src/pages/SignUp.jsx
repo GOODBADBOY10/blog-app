@@ -18,11 +18,11 @@ function SignUp() {
 // handling form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.username ||!formData.email ||!formData.password) {
+    if (!formData.username || !formData.email || !formData.password) {
       dispatch(loginFailure('Please fill in all fields'));
       return;
     }
-    // handle form submission
+    // handle form submission 
     try {
       dispatch(loginStart())
       const response = await fetch('/api/auth/signup', {
@@ -103,7 +103,7 @@ function SignUp() {
                 </>
               ) : 'Signup'  }
             </Button>
-            <Oauth />
+            {/* <Oauth /> */}
           </form>
           <div className='flex gap-2 text-sm mt-5'>
             <span>Already have an account?</span>
